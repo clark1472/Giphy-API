@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Christen's Giphy API of Animals</title>
+    <style type="text/css>">
+      button, 
+      div, 
+      form, 
+      input {
+        margin: 10px;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Animal Search</h1>
+
+        <div id="topic"></div>
+<!--this is for array of buttons with Dogs, Cats, Rabbit and Snakes in boxes-->
+        <form id="animal-form">
+          <label for="animal-input">Search for an Animal</label>
+          <input type="text" id="animal-input"><br><br>
+          <input id="add-animal" type="submit" value="Submit"><br><br>
+        </form>
+       
+<!--this is for adding animals in box-->
+      <div id = "seeButton"></div><br><br>
+
+      <div id = "imageDisplay"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+var topics = ["Dogs", "Cats", "Rabbits", "Snakes"];
+
+function displayButtons() {
+  $("#seeButton").empty();
+  for (var i = 0; i < topics.length; i++) {
+    var btn = $("<button>");
+    btn.addClass("topics");
+    btn.attr("data-name", topics[i]);
+    btn.text(topics[i]);
+    $("#seeButton").append(btn);
+  }
+}
+
+
+    // This .on("click") function will trigger the AJAX Call from line 28
+//    $("#find-animal").on("click", function(event) {
+
+    // Preventing the submit button from trying to submit the form
+    // We're optionally using a form so the user may hit Enter to search instead of clicking the button
+//    event.preventDefault();
+
+    // Here we grab the text from the input box
+//    var animal = $("#animal-input").val();
+
+  
+
+
+//making the images show up
+  function getTopics() {
+    $("#imageDisplay").empty();
+  console.log("getTopics");
+    var topicName = $(this).attr("data-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?&q=" +
+    topicName 
+    + "&limit=10&rating=g&api_key=k41UwCCTgkKWtaB68g3U6aOgZ8xHycsU";
+
+    console.log(queryURL);
+
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+  console.log(response);
+
+      for(var i = 0; i < response.data.length; i++) {
+        try{throw i}
+        catch(ii) {
+        setTimeout(function(){
+            console.log(ii);
+
+            console.log( ii + "  " + response.data.length);
+             var imageAnimal = $("<img>");
+
+            imageAnimal.addClass("gif");
+            //    console.log(response.data[i].images.original.url);
+
+            holdOne=response.data[ii].images.original.url;
+        console.log(holdOne);
+        //imageAnimal.attr("src", response.data[i].images.original.url);
+            imageAnimal.attr("src", holdOne);
+
+        //ratings 
+
+             $("#imageDisplay").append(imageAnimal);
+
+
+        },1000);
+      }
+      }
+    }
+  };
+/*
+      for (var i = 0; i < response.data.length; i++); {
+
+        try{throw i}
+        catch(jj) {
+
+        console.log( jj + "  " + response.data.length);
+        var imageAnimal = $("<img>");
+
+        imageAnimal.addClass("gif");
+ //       console.log(response.data[i].images.original.url);
+
+        holdOne=response.data[jj].images.original.url;
+        console.log(holdOne);
+        //imageAnimal.attr("src", response.data[i].images.original.url);
+        imageAnimal.attr("src", holdOne);
+
+        //ratings 
+
+        $("#imageDisplay").append(imageAnimal);
+      }*/
+
+          
+     
+
+//responds to on click of topic button
+$(document).on("click", ".topics", getTopics);
+
+displayButtons();
+
+  </script>
+  
+  </div>
+</body>
+
+</html>
+
+
+<!--
+<img src="https://media1.giphy.com/media/3o85xkQpyMlnBkpB9C/200_s.gif" data-still="https://media1.giphy.com/media/3o85xkQpyMlnBkpB9C/200_s.gif" data-animate="https://media1.giphy.com/media/3o85xkQpyMlnBkpB9C/200.gif" data-state="still" class="gif">
+  <img src="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200_s.gif" data-still="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200_s.gif" data-animate="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200.gif" data-state="still" class="gif">
+  <img src="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-still="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-animate="https://media3.giphy.com/media/W6LbnBigDe4ZG/200.gif" data-state="still" class="gif">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+ </script>
+  <script type="text/javascript">
+    $(".gif").on("click", function() {
+      // STEP ONE: study the html above.
+      // Look at all the data attributes.
+      var state = $(this).attr("data-state");
+      // Run the file in the browser. Look at the images.
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+      $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    }); -->
+    <!--
+    // Example queryURL for Giphy API this is my API key=k41UwCCTgkKWtaB68g3U6aOgZ8xHycsU
+    var queryURL = "https://api.giphy.com/v1/gifs/search?&q=animals&limit=10&rating=g&api_key=k41UwCCTgkKWtaB68g3U6aOgZ8xHycsU";
+
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(response);
+      console.log(response.data[0].rating);
+      console.log(response.data[0].source);
+ 
+      function gotData(giphy) {
+      for (var i = 0; i < giphy.data.length; i++); {
+      createImg(giphy.data[i].images.original.url);
+      }}
+ 
+
+      var imageAnimal = $("<img>");
+
+      imageAnimal.addClass("gif");
+
+      imageAnimal.attr("src", response.data[0].images.original.url);
+
+      //imageAnimal.attr("data-animalValue", random);
+
+      $("#imageDisplay").append(imageAnimal);
+  });  -->
