@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Christen's Giphy API of Animals</title>
+  <style>
+    button {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+<!--------------------this works HTML------------------------------------->
+    <div class="container">
+      <h1>Animal Search</h1>
+      <div id="topic"></div>
+
+<!--this is for array of buttons with Dogs, Cats, Rabbit and Snakes in boxes-->
+        <form id="animal-form">
+          <label for="animal-input">Search for an Animal</label>
+          <input type="text" id="animal-input"><br><br>
+          <input id="add-animal" type="submit" value="Submit"><br><br>
+        </form>
+       
+<!--this is for adding animals in box-->
+      <div id = "seeButton"></div><br><br>
+      <div id = "imageDisplay"></div>
+    </div>
+<!---------end of HTML this works / start of JavaScript-------->
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+//=======this is for hard coded array buttons========they show up==============
+var topics = ["Dogs", "Cats", "Rabbits", "Snakes"];
+
+
+//responds to on click of topic button
+$(document).on("click", ".topics", getTopics);
+
+
+
+$("#add-animal").on("click", function(event) {
+        event.preventDefault();
+  console.log("add-anmial click");
+        // This line grabs the input from the textbox
+        var animalAdd = $("#animal-input").val().trim();
+
+        // The movie from the textbox is then added to our array
+        topics.push(animalAdd);
+
+        // Calling renderButtons which handles the processing of our movie array
+        displayButtons();
+         
+        $("#animal-input").val("");
+      });
+
+
+      $("body").on("click", ".gif", function() {
+      //$(".gif").on("click", function() {
+ 
+      // STEP ONE: study the html above.
+      // Look at all the data attributes.
+      var status = $(this).attr("stillAnimate");
+      // Run the file in the browser. Look at the images.
+  
+      if (status === "still") {
+        $(this).attr("src", $(this).attr("imageAnimate"));
+        $(this).attr("stillAnimate", "animate");
+      } else {
+      $(this).attr("src", $(this).attr("imageStill"));
+        $(this).attr("stillAnimate", "still");
+      }
+
+    });
+
+
+function displayButtons() {
+  $("#seeButton").empty();
+  for (var i = 0; i < topics.length; i++) {
+    var btn = $("<button>");
+    btn.addClass("topics");
+    btn.attr("data-name", topics[i]);
+    btn.text(topics[i]);
+    $("#seeButton").append(btn);
+  }
+}
+
+//=========making the 10 images show up======this works==========================
+  function getTopics() {
+    $("#imageDisplay").empty();
+
+    var topicName = $(this).attr("data-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?&q=" + topicName  + "&limit=10&rating=g&api_key=k41UwCCTgkKWtaB68g3U6aOgZ8xHycsU";
+
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+        console.log(response);
+
+        for(var i = 0; i < response.data.length; i++) {
+        
+          try{throw i}
+          catch(ii) {
+            setTimeout(function(){
+            var imageAnimal = $("<img>");
+            
+            imageAnimal.attr("src", response.data[ii].images.original_still.url);
+            imageAnimal.attr("stillAnimate", "still");
+            imageAnimal.attr("ImageStill", response.data[ii].images.original_still.url);
+            imageAnimal.attr("ImageAnimate", response.data[ii].images.original.url);
+            imageAnimal.addClass("gif");
+                  //ratings 
+            $("#imageDisplay").append(imageAnimal);
+          },1);}
+       } 
+    })
+  };
+ //===========10 images===this works===================== 
+
+//=========done=============================================
+
+displayButtons();
+
+</script>
+  
+  
+</body>
+
+</html>
