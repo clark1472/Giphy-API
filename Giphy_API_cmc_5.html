@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Christen's Giphy API of Animals</title>
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
     button {
       margin: 10px;
@@ -20,12 +22,11 @@
       font-size: 20px;
       color: white;
     }
-
   </style>
 </head>
 
 <body>
-<!--------------------this works HTML------------------------------------->
+<!-------------------- HTML------------------------------------->
     <div class="container">
       <h1>Animal Search</h1>
       <div id="topic"></div>
@@ -62,10 +63,10 @@ $("#add-animal").on("click", function(event) {
         // This line grabs the input from the textbox
         var animalAdd = $("#animal-input").val().trim();
 
-        // The movie from the textbox is then added to our array
+        // The animal from the textbox is then added to our array
         topics.push(animalAdd);
 
-        // Calling renderButtons which handles the processing of our movie array
+        // Calling renderButtons which handles the processing of our animal array
         displayButtons();
          
         $("#animal-input").val("");
